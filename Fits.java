@@ -23,6 +23,4 @@ public class Fits {
     public void setObjetivo(String objetivo) { this.objetivo = objetivo; }
     public boolean isDatosCompletos() { return datosCompletos; }
     public void setDatosCompletos(boolean datosCompletos) { this.datosCompletos = datosCompletos; }
-    public Fits getDatosFitness() {
     }
-}
