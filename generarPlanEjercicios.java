@@ -1,8 +1,8 @@
 package proyectoFinal;
 
 public class generarPlanEjercicios {
-    Fits usuario;
-    Fits datos = usuario.getDatosFitness();
+    MenuProyecto usuario = new MenuProyecto();
+    Fits datos = new Fits();
     public void generarPlanEjercicios() {
         System.out.println("\n--- PLAN DE EJERCICIOS PERSONALIZADO ---");
         System.out.println("Basado en tus datos:");
@@ -10,17 +10,22 @@ public class generarPlanEjercicios {
         System.out.println("- Altura: " + datos.getAltura() + " m");
         System.out.println("- Nivel de actividad: " + datos.getNivelActividad());
         System.out.println("- Objetivo: " + datos.getObjetivo());
-
-        // Lógica personalizada según los datos
+        //PERSONALIZAR BIEN LAS RUTINAS
+        //ESTO SON RECOMENDACIONES PARA CUANDO TIENE UN NIVEL DE ACTIVIDAD SEDENTARIA
         System.out.println("\nRecomendaciones:");
-        if (datos.getObjetivo().equals("Déficit calórico")) {
+        if (datos.getObjetivo().equals("DC")) {
             System.out.println("- Rutina: Cardio intensivo 5 días/semana");
             System.out.println("- Ejercicios: Correr, ciclismo, HIIT");
-        } else if (datos.getObjetivo().equals("Aumentar masa muscular")) {
+        } else if (datos.getObjetivo().equals("AP")) {
             System.out.println("- Rutina: Entrenamiento de fuerza 4 días/semana");
             System.out.println("- Ejercicios: Pesas, calistenia, resistencia");
+        }else if (datos.getObjetivo().equals("MP")) {
+            System.out.println();
+
+        }else if (datos.getObjetivo().equals("SP")) {
+            System.out.println();
         }
-        // Cálculo de IMC
+
         double imc = datos.getPeso() / (datos.getAltura() * datos.getAltura());
         System.out.printf("\nTu IMC es: %.1f - %s\n", imc, clasificarIMC(imc));
     }
@@ -31,5 +36,4 @@ public class generarPlanEjercicios {
         else if (imc < 30) return "Sobrepeso";
         else return "Obesidad";
     }
-
 }
