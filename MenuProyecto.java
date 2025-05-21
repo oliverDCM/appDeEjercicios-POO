@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 public class MenuProyecto{
     private List<Usuario> usuariosRegistrados = new ArrayList<>();
-    private List<Fits> UsuariosDatosRegistados  = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
     private Double peso;
     private Double altura;
-    private String NivelActividad;
     private String objetivo;
     Fits datosFitness = new Fits();
     private Usuario usuarioAutenticado;
@@ -18,6 +16,38 @@ public class MenuProyecto{
     Integer nuevaEdad;
     boolean correoValido = false;
     boolean edadValida = false;
+    public void iniciar() {
+        boolean salir = false;
+        while (!salir) {
+            System.out.println("""
+                ╔══════════════════════════════╗
+                ║       MENÚ PRINCIPAL         ║
+                ╠══════════════════════════════╣
+                ║  1. Registrarse              ║
+                ║  2. Iniciar sesión           ║
+                ║  3. Salir                    ║
+                ╚══════════════════════════════╝
+                """);
+            System.out.print("Seleccione una opción: ");
+            String opcion = scanner.nextLine();
+            switch (opcion) {
+                case "1":
+                    registrarUsuario();
+                    break;
+                case "2":
+                    if (iniciarSesion()) {
+                        mostrarMenuSecundario();
+                    }
+                    break;
+                case "3":
+                    salir = true;
+                    System.out.println("¡Hasta pronto!");
+                    break;
+                default:
+                    System.out.println("Opción inválida");
+            }
+        }
+    }
 
     public void registrarUsuario() {
         System.out.println("\n--- REGISTRO DE USUARIO ---");
@@ -89,65 +119,82 @@ public class MenuProyecto{
     private void mostrarMenuSecundario() {
         while(usuarioAutenticado != null) {
             System.out.println("""
-                *** MENÚ USUARIO ***
-                1. Ver mis datos
-                2. Modificar mis datos
-                3. Ingrese sus datos de fitness
-                4. IMC
-                5.Plan de Ejercicios
-                6. Cerrar sesión
-                Seleccione opción:
-                """);
-            Byte opcion = Byte.parseByte(scanner.nextLine().trim());
-            switch(opcion) {
-                case 1:
-                    mostrarDatosUsuario(usuarioActual);
-                    break;
-                case 2:
-                    modificarDatosUsuario();
-                    break;
-                case 3:
-                    datosFitness();
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    cerrarSesion();
-                    return;
-                //AGREGAR LAS OTRAS OPCIONES
-                default:
-                    System.out.println("Opción inválida");
-            }}}
-    public void mostrarDatosUsuario(String usuarioActual) {
-        System.out.println("\n--- TUS DATOS ---");
-        System.out.println("Correo: " + usuarioAutenticado.getCorreo());
-        System.out.println("Nombre: " + usuarioAutenticado.getNombre());
-        System.out.println("Género:" + usuarioAutenticado.getGenero());
-        System.out.println("Edad: " + usuarioAutenticado.getEdad());
-       if (datosFitness.isDatosCompletos()){
-           System.out.println("- Peso: " + datosFitness.getPeso() + " kg");
-           System.out.println("- Altura: " + datosFitness.getAltura() + " m");
-           System.out.println("- Nivel Actividad: " + datosFitness.getNivelActividad());
-           System.out.println("- Objetivo: " + datosFitness.getObjetivo());
-       }
-       else {System.out.println("No se han guardado los datos de fitness");}
+                    ╔══════════════════════════════════════════════════╗
+                    ║                MENÚ DE USUARIO                   ║
+                    ╠══════════════════════════════════════════════════╣
+                    ║  1. Ver mis datos                                ║                          
+                    ║  2. Ingresar datos de fitness                    ║
+                    ║  3. Plan de ejercicios                           ║
+                    ║  4. Cerrar sesión                                ║
+                    ╠══════════════════════════════════════════════════╣
+                      Seleccione opción: 
+                    """);
+            String input = scanner.nextLine().trim();
 
-    }
-    private void modificarDatosUsuario() {
-        System.out.println("\n--- MODIFICAR DATOS ---");
-        System.out.print("Nuevo nombre (" + usuarioAutenticado.getNombre() + "): ");
-        String nuevoNombre = scanner.nextLine().toLowerCase().trim();
-        if(!nuevoNombre.isEmpty()) usuarioAutenticado.setNombre(nuevoNombre);
-        System.out.print("Nuevo género (" + usuarioAutenticado.getGenero() + "): ");
-        String nuevoGenero = scanner.nextLine().toUpperCase().trim();
-        if(!nuevoGenero.isEmpty()) usuarioAutenticado.setGenero(nuevoGenero);
-        System.out.print("Nueva edad (" + usuarioAutenticado.getEdad() + "): ");
-        String nuevaEdad = scanner.nextLine().trim().replace(".","").replace(",","");
-        if(!nuevaEdad.isEmpty()) usuarioAutenticado.setEdad(Integer.parseInt(nuevaEdad));
-        System.out.println("Datos actualizados correctamente");
-    }
+            if (input.isEmpty()) {
+                System.out.println("No ingresaste ninguna opción. Intenta de nuevo.");
+                continue;
+            }
+            byte opcion = Byte.parseByte(input);
+            switch(opcion) {
+                        case 1:
+                            mostrarDatosUsuario(usuarioActual);
+                            break;
+                        case 2:
+                            datosFitness();
+                            break;
+                        case 3:
+                            mostrarPlanEjercicios();
+                            break;
+                        case 4:
+                            cerrarSesion();
+                            return;
+                        //AGREGAR LAS OTRAS OPCIONES
+                        default:
+                            System.out.println("Opción inválida");
+                    }}}
+            public void mostrarDatosUsuario(String usuarioActual) {
+                StringBuilder datos = new StringBuilder();
+                datos.append("""
+    ╔══════════════════════════════════════════════════╗
+    ║                  TUS DATOS                       ║
+    ╠══════════════════════════════════════════════════╣
+    ║  Correo: %-37s   ║
+    ║  Nombre: %-37s   ║
+    ║  Género: %-37s   ║
+    ║  Edad:   %-37d   ║
+    """.formatted(
+                usuarioAutenticado.getCorreo(),
+                usuarioAutenticado.getNombre(),
+                usuarioAutenticado.getGenero(),
+                usuarioAutenticado.getEdad()
+        ));
+                Fits datosFitness = usuarioAutenticado.getDatosFitness();
+                if (datosFitness != null && datosFitness.isDatosCompletos()) {
+                    datos.append(""" 
+        ╠══════════════════════════════════════════════════╣
+        ║  Peso:    %-29.2f kg       ║
+        ║  Altura:  %-29.2f m        ║
+        ║  Imc:  %-29f             ║
+        ║  Nivel Actividad: %-29s  ║
+        ║  Objetivo:        %-29s  ║
+        """.formatted(
+                            datosFitness.getPeso(),
+                            datosFitness.getAltura(),
+                            datosFitness.getImc(),
+                            datosFitness.getNivelActividad(),
+                            datosFitness.getObjetivo()
+                    ));
+                } else {
+                    datos.append("""
+        ╠══════════════════════════════════════════════════╣
+        ║  Sin datos fitness registrados                   ║
+        """);
+                }
+                datos.append("╚══════════════════════════════════════════════════╝");
+                System.out.println(datos.toString());
+            }
+
     private void datosFitness() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n--- DATOS FITNESS ---");
@@ -189,12 +236,22 @@ public class MenuProyecto{
         }
         String nivelActividad;
         while (true) {
-            System.out.println("Niveles de actividad válidos:");
-            System.out.println("S - Sedentario (poco o ningún ejercicio)");
-            System.out.println("L - Ligero (ejercicio 1-3 días/semana)");
-            System.out.println("M - Moderado (ejercicio 3-5 días/semana)");
-            System.out.println("A - Activo (ejercicio 6-7 días/semana)");
-            System.out.print("Seleccione nivel de actividad: ");
+            System.out.println("""
+    ╔══════════════════════════════════════════════════╗
+    ║               NIVELES DE ACTIVIDAD               ║
+    ╠══════════════════════════════════════════════════╣
+    ║  S - Sedentario                                  ║
+    ║    (poco o ningún ejercicio)                     ║
+    ║  L - Ligero                                      ║
+    ║    (ejercicio 1-3 días/semana)                   ║
+    ║  M - Moderado                                    ║
+    ║    (ejercicio 3-5 días/semana)                   ║
+    ║  A - Activo                                      ║
+    ║    (ejercicio 6-7 días/semana)                   ║
+    ╠══════════════════════════════════════════════════╣
+    ║  Seleccione nivel de actividad:                  ║
+    ╚══════════════════════════════════════════════════╝
+    """);
             nivelActividad = scanner.nextLine().trim().toUpperCase();
 
             if (nivelActividad.matches("S|L|M|A")) {
@@ -203,26 +260,26 @@ public class MenuProyecto{
             System.out.println("Opción inválida. Seleccione una de las opciones mostradas");
         }
         while (true) {
-            System.out.println("Objetivos válidos:");
-            System.out.println("DC - Déficit calórico (bajar de peso)");
-            System.out.println("MP - Mantener peso actual(Tonificar)");
-            System.out.println("AP - Aumentar peso/masa muscular");
-            System.out.println("SP - Subir peso ");
-            System.out.print("Seleccione objetivo: ");
+            System.out.println("""
+    ╔══════════════════════════════════════════════════╗
+    ║               OBJETIVOS VALIDOS                  ║
+    ╠══════════════════════════════════════════════════╣
+    ║  DC - Déficit calórico (bajar de peso)           ║
+    ║  MP - Mantener peso actual (Tonificar)           ║
+    ║  AP - Aumentar peso/masa muscular                ║
+    ║  SP - Subir peso                                 ║
+    ╠══════════════════════════════════════════════════╣
+    ║  Seleccione objetivo:                            ║
+    ╚══════════════════════════════════════════════════╝
+    """);
             objetivo = scanner.nextLine().trim().toUpperCase();
             if (objetivo.matches("DC|MP|AP|SP")) {
                 break;
             }
             System.out.println("Opción inválida. Seleccione una de las opciones mostradas");
         }
-        Fits nuevoUsuario = new Fits(peso, altura, nivelActividad, objetivo,"",0);
-        UsuariosDatosRegistados.add(nuevoUsuario);
-
-        datosFitness.setPeso(peso);
-        datosFitness.setAltura(altura);
-        datosFitness.setNivelActividad(nivelActividad);
-        datosFitness.setObjetivo(objetivo);
-
+        Fits datos = new Fits(peso, altura, nivelActividad, objetivo);
+        usuarioAutenticado.setDatosFitness(datos);
         datosFitness.setDatosCompletos(true);
         System.out.println("\nDatos fitness guardados correctamente!");
         System.out.println("Resumen:");
@@ -230,6 +287,43 @@ public class MenuProyecto{
         System.out.println("- Altura: " + altura + " m");
         System.out.println("- Nivel Actividad: " + nivelActividad);
         System.out.println("- Objetivo: " + objetivo);
+        System.out.printf("IMC calculado: %.2f\n", datos.getImc());
+    }
+    private void mostrarPlanEjercicios() {
+        if (usuarioAutenticado == null || usuarioAutenticado.getDatosFitness() == null) {
+            System.out.println("Complete sus datos fitness primero");
+            return;
+        }
+
+        Fits datos = usuarioAutenticado.getDatosFitness();
+        PlanEjercicio plan = crearPlanPersonalizado(datos.getNivelActividad(), datos.getObjetivo());
+
+        if (plan != null) {
+            plan.mostrarPlan();
+        } else {
+            System.out.println("No hay plan disponible para su combinación actual");
+        }
+    }
+    private PlanEjercicio crearPlanPersonalizado(String nivel, String objetivo) {
+        return switch (nivel + "|" + objetivo) {
+            case "S|DC" -> new PlanDeficitSedentario();
+            case "L|DC" -> new PlanDeficitLigero();
+            case "M|DC" -> new PlanDeficitModerado();
+            case "A|DC" -> new PlanDeficitActivo();
+            case "S|MP" -> new PlanMantenerPesoSedentario();
+            case "L|MP" -> new PlanMantenerPesoLigero();
+            case "M|MP" -> new PlanMantenerPesoModerado();
+            case "A|MP" -> new PlanMantenerPesoActivo();
+            case "S|SP" -> new PlanSubirPesoSedentario();
+            case "L|SP" -> new PlanSubirPesoLigero();
+            case "M|SP" -> new PlanSubirPesoModerado();
+            case "A|SP" -> new PlanSubirPesoActivo();
+            case "S|AP" -> new PlanMasaSedentaria();
+            case "L|AP" -> new PlanMasaLigero();
+            case"M|AP" -> new PlanMasaModerado();
+            case"A|AP" -> new PlanMasaActivo();
+            default -> null;
+        };
     }
     private void cerrarSesion() {
         usuarioAutenticado = null;

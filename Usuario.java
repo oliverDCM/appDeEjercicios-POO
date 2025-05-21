@@ -5,7 +5,9 @@ public class Usuario {
     protected String nombre;
     protected String genero;
     protected Integer edad;
-    protected String contrasena;
+    protected String contrasena;// En la clase Usuario
+    private Fits datosFitness;
+
 
     public Usuario(String correo, String nombre, String genero, int edad, String contrasena) {
         this.correo = correo;
@@ -16,6 +18,8 @@ public class Usuario {
     }
 
     public Usuario() {}
+
+    public Fits getDatosFitness() {return datosFitness;}
 
     public String getCorreo() { return correo; }
 
@@ -36,4 +40,6 @@ public class Usuario {
     public void setEdad( Integer edad) { this.edad = edad; }
 
     public void setContrasena(String contrasena) { this.contrasena = contrasena; }
+
+    public void setDatosFitness(Fits datosFitness) {this.datosFitness = datosFitness;}
 }

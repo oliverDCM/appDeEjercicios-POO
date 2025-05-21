@@ -1,28 +1,35 @@
 package proyectoFinal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Fits {
-    private double peso; // en kg
-    private double altura; // en metros
+    private List<Double> historialIMC = new ArrayList<Double>();
+    private Double peso; // en kg
+    private Double altura; // en metros
     private String nivelActividad;
     private String objetivo;
-
-
-
-    private String Aditivos;
-    private Integer DiasDeActividad;
     private boolean datosCompletos;
+    private double imc;
+
     public Fits() {
 
     }
-    public Fits(double peso, double altura,String nivelActividad, String objetivo, String Aditivos, Integer DiasDeActividad) {
+    public Fits(double peso, double altura, String nivelActividad, String objetivo) {
         this.peso = peso;
         this.altura = altura;
         this.datosCompletos = true;
         this.nivelActividad = nivelActividad;
         this.objetivo = objetivo;
-        this.Aditivos = Aditivos;
-        this.DiasDeActividad = DiasDeActividad;
-        this.datosCompletos = false;
+        this.datosCompletos = true;
+        calcularIMC();
+    }
+    private void calcularIMC() {
+        if (altura > 0 && peso > 0) {
+            this.imc = peso / (altura * altura);
+            historialIMC.add(this.imc);
+        }
+
     }
 
     public double getPeso() { return peso; }
@@ -40,9 +47,10 @@ public class Fits {
     public boolean isDatosCompletos() { return datosCompletos; }
     public void setDatosCompletos(boolean datosCompletos) { this.datosCompletos = datosCompletos; }
 
-    public String getAditivos() {return Aditivos;}
-    public void setAditivos(String aditivos) {Aditivos = aditivos;}
+    public double getImc() { return imc; }
+    public void setImc(double imc) { this.imc = imc; }
 
-    public Integer getDiasDeActividad() {return DiasDeActividad;}
-    public void setDiasDeActividad(Integer diasDeActividad) {DiasDeActividad = diasDeActividad;}
+    public List<Double> getHistorialIMC() {
+        return historialIMC;
+    }
 }
