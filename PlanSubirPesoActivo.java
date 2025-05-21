@@ -4,7 +4,6 @@ public class PlanSubirPesoActivo extends PlanEjercicio {
     public PlanSubirPesoActivo() {
         super("Activo", "Subir Peso");
     }
-
     @Override
     protected void generarPlan() {
         this.diasPorSemana = 6;

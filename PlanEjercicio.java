@@ -5,6 +5,7 @@ package proyectoFinal;
         protected String[] ejercicios;
         protected Integer diasPorSemana;
         protected Integer duracionSesion;
+        FrasesMotivacionales generador = new FrasesMotivacionales();
         public PlanEjercicio(String nivel, String objetivo) {
             this.nivel = nivel;
             this.objetivo = objetivo;
@@ -21,5 +22,6 @@ package proyectoFinal;
             for (String ejercicio : ejercicios) {
                 System.out.println("- " + ejercicio);
             }
+            System.out.println(generador.obtenerFraseAleatoria());
         }
     }

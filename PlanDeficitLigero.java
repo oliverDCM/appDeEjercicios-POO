@@ -15,5 +15,5 @@ public class PlanDeficitLigero extends PlanEjercicio {
                 "Zancadas estáticas 3x10",
                 "Saltos de cuerda imaginarios 5 min"
         };
-}
+    }
 }

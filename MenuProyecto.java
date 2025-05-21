@@ -1,5 +1,4 @@
 package proyectoFinal;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -83,21 +82,25 @@ public class MenuProyecto{
         do {
             System.out.print("Edad: ");
             String entrada = scanner.nextLine().trim();
-            if (!entrada.matches("\\d+")) {
+            if (!entrada.matches("\\d+")) { // Checks if the input consists only of digits (non-negative integers)
                 System.out.print("Error: Solo se permiten números enteros. Intente nuevamente: ");
             } else {
                 nuevaEdad = Integer.parseInt(entrada);
-
-                if (nuevaEdad < 1 || nuevaEdad > 120) {
-                    System.out.print("Edad debe estar entre 1 y 120 años. Intente nuevamente: ");
+                // Modified validation: age must be > 10 and not negative (already covered by "\\d+")
+                if (nuevaEdad <= 10 || nuevaEdad > 120) { // Age must be greater than 10 and not exceed 120
+                    System.out.print("La edad debe ser mayor a 10 años y no exceder los 120. Intente nuevamente: ");
                 } else {
                     edadValida = true;
                 }
             }
         } while (!edadValida);
         System.out.print("Contraseña: ");
-        String nuevaContraseña = scanner.nextLine();
-        Usuario nuevoUsuario = new Usuario(nuevoCorreo, nuevoNombre, nuevoGenero, nuevaEdad, nuevaContraseña);
+        String nuevaContrasena = scanner.nextLine();
+
+        if (nuevaContrasena.isEmpty()) {
+            System.out.println("Error: Debes ingresar una contraseña válida");
+        }
+        Usuario nuevoUsuario = new Usuario(nuevoCorreo, nuevoNombre, nuevoGenero, nuevaEdad, nuevaContrasena);
         usuariosRegistrados.add(nuevoUsuario);
         System.out.println("\n¡Registro exitoso!");
     }
@@ -106,9 +109,9 @@ public class MenuProyecto{
         System.out.print("Correo electrónico: ");
         String correo = scanner.nextLine().trim();
         System.out.print("Contraseña: ");
-        String contraseña = scanner.nextLine();
+        String contrasena = scanner.nextLine();
         for (Usuario usuario : usuariosRegistrados) {
-            if(usuario.getCorreo().equals(correo) && usuario.getContrasena().equals(contraseña)) {
+            if(usuario.getCorreo().equals(correo) && usuario.getContrasena().equals(contrasena)) {
                 usuarioAutenticado = usuario;
                 System.out.println("\n¡Bienvenido " + usuario.getNombre() + "!");
                 mostrarMenuSecundario();
@@ -163,8 +166,7 @@ public class MenuProyecto{
     ║  Nombre: %-37s   ║
     ║  Género: %-37s   ║
     ║  Edad:   %-37d   ║
-    """.formatted(
-                usuarioAutenticado.getCorreo(),
+    """.formatted(usuarioAutenticado.getCorreo(),
                 usuarioAutenticado.getNombre(),
                 usuarioAutenticado.getGenero(),
                 usuarioAutenticado.getEdad()
@@ -333,6 +335,8 @@ public class MenuProyecto{
         for (Usuario usuario : usuariosRegistrados) {
             if (usuario.getCorreo().equalsIgnoreCase(correo)) {
                 return true;
-            }}
+            }
+        }
         return false;
-    }}
+    }
+}
