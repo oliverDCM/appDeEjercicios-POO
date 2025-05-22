@@ -101,9 +101,4 @@ public class FrasesMotivacionales {
         return frases[indice];
     }
 
-    // Ejemplo de uso
-    public static void main(String[] args) {
-        FrasesMotivacionales motivador = new FrasesMotivacionales();
-        System.out.println("Frase del día: " + motivador.obtenerFraseAleatoria());
-    }
 }

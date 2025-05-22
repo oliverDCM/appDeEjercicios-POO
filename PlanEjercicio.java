@@ -22,6 +22,6 @@ package proyectoFinal;
             for (String ejercicio : ejercicios) {
                 System.out.println("- " + ejercicio);
             }
-            System.out.println(generador.obtenerFraseAleatoria());
+            System.out.println(generador.obtenerFraseAleatoria()+" \uD83D\uDCAA");
         }
     }

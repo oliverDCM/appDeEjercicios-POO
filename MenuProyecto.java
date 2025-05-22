@@ -82,12 +82,12 @@ public class MenuProyecto{
         do {
             System.out.print("Edad: ");
             String entrada = scanner.nextLine().trim();
-            if (!entrada.matches("\\d+")) { // Checks if the input consists only of digits (non-negative integers)
+            if (!entrada.matches("\\d+")) {
                 System.out.print("Error: Solo se permiten números enteros. Intente nuevamente: ");
             } else {
                 nuevaEdad = Integer.parseInt(entrada);
-                // Modified validation: age must be > 10 and not negative (already covered by "\\d+")
-                if (nuevaEdad <= 10 || nuevaEdad > 120) { // Age must be greater than 10 and not exceed 120
+
+                if (nuevaEdad <= 10 || nuevaEdad > 120) {
                     System.out.print("La edad debe ser mayor a 10 años y no exceder los 120. Intente nuevamente: ");
                 } else {
                     edadValida = true;
@@ -152,10 +152,10 @@ public class MenuProyecto{
                         case 4:
                             cerrarSesion();
                             return;
-                        //AGREGAR LAS OTRAS OPCIONES
                         default:
                             System.out.println("Opción inválida");
                     }}}
+
             public void mostrarDatosUsuario(String usuarioActual) {
                 StringBuilder datos = new StringBuilder();
                 datos.append("""
