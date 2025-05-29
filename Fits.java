@@ -13,19 +13,18 @@ public class Fits {
     private double imc;
 
     public Fits() {
-
+        this.datosCompletos = false;
     }
     public Fits(double peso, double altura, String nivelActividad, String objetivo) {
         this.peso = peso;
         this.altura = altura;
-        this.datosCompletos = true;
         this.nivelActividad = nivelActividad;
         this.objetivo = objetivo;
-        this.datosCompletos = true;
         calcularIMC();
+        this.datosCompletos = true;
     }
     private void calcularIMC() {
-        if (altura > 0 && peso > 0) {
+        if (altura > 0 ) {
             this.imc = peso / (altura * altura);
             historialIMC.add(this.imc);
         }
